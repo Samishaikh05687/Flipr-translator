@@ -8,16 +8,16 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-   min-height: 100vh;
+  min-height: 100vh;
   background-image: url(/public/background.svg);
   background-repeat: no-repeat;
-  background-position: center;
+  background-size: 1400px 600px;
 }
 
-.container {
+.container{
   max-width: 700px;
-  width: 100%;
-  background: #fff;
+  width: 90%;
+  background-color: #fff;
   border-radius: 10px;
   padding: 30px;
   box-shadow: 0 10px 20px #000;

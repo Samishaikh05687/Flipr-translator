@@ -3,9 +3,9 @@ import Translator from './Translator';
 
 function App() {
   return (
-    <div className="App">
+    <div className='container'>
       <Translator/>
-      hello
+     
     </div>
   );
 }

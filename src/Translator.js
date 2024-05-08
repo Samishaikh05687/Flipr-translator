@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
-import lang from './../languages';
+import lang from './languages';
+
+
 
 function Translator() {
 
@@ -14,16 +16,7 @@ function Translator() {
         setLanguages(lang);
     }, []);
 
-    const copyContent = (text) => {
-        navigator.clipboard.writeText(text);
-    }
-
-    const utterText = (text, language) => {
-        const synth = window.speechSynthesis;
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = language;
-        synth.speak(utterance);
-    }
+   
 
     const handleExchange = () => {
         let tempValue = fromText;
@@ -35,33 +28,44 @@ function Translator() {
         setToLanguage(tempLang);
     };
 
-    const handleTranslate = () => {
+    // const handleTranslate = async () => {
+    //     const translate = new Translate({ key: 'b06ad6936emshee726479be78517p1a2869jsn990f6b166b3d' });
+    //     try {
+    //         const translations = await Promise.all(
+    //             fromLanguage.map(async (language) => {
+    //                 const [translation] = await translate.translate(fromText, language);
+    //                 return { language, translation };
+    //             })
+    //         );
+    //         setToText(translations);
+    //     } catch (error) {
+    //         console.error('Error translating text:', error);
+    //     }
+    // };
+
+    const handleTranslate = async () => {
         setLoading(true);
-        let url = `https://api.mymemory.translated.net/get?q=${fromText}&langpair=${fromLanguage}|${toLanguage}`;
-
-        fetch(url)
-        .then((res) => res.json())
-        .then((data) => {
-            setToText(data.responseData.translatedText);
-            setLoading(false);
-        });
-    };
-
-    const handleIconClick = (target, id) => {
-        if (!fromText || !toText) return;
-
-        if (target.classList.contains('fa-copy')) {
-            if (id === 'from') {
-                copyContent(fromText);
-            } else {
-                copyContent(toText);
-            }
-            } else {
-            if (id === 'from') {
-                utterText(fromText, fromLanguage);
-            } else {
-                utterText(toText, toLanguage);
-            }
+        const url = 'https://google-translate113.p.rapidapi.com/api/v1/translator/text';
+        const options = {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/x-www-form-urlencoded',
+                'X-RapidAPI-Key': 'b06ad6936emshee726479be78517p1a2869jsn990f6b166b3d',
+                'X-RapidAPI-Host': 'google-translate113.p.rapidapi.com'
+            },
+            body: new URLSearchParams({
+                from: fromLanguage,
+                to: toLanguage,
+                text: fromText
+            })
+        };
+        
+        try {
+            const response = await fetch(url, options);
+            const result = await response.text();
+            console.log(result);
+        } catch (error) {
+            console.error(error);
         }
     };
 
