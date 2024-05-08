@@ -12,6 +12,9 @@ function Translator() {
     const [languages, setLanguages] = useState({});
     const [loading, setLoading] = useState(false);
 
+    
+
+
     useEffect(() => {
         setLanguages(lang);
     }, []);
@@ -54,19 +57,22 @@ function Translator() {
                 'X-RapidAPI-Host': 'google-translate113.p.rapidapi.com'
             },
             body: new URLSearchParams({
-                from: fromLanguage,
-                to: toLanguage,
+                from:'en',
+                to: 'hi',
                 text: fromText
             })
         };
         
         try {
             const response = await fetch(url, options);
-            const result = await response.text();
+            const result = await response.json();
+            const tt= result.trans;
             console.log(result);
+            setToText(tt);
         } catch (error) {
             console.error(error);
         }
+        setLoading(false);
     };
 
 
@@ -74,7 +80,7 @@ function Translator() {
         <>
         <div className="wrapper">
             <div className="text-input">
-                <textarea name="from" className="from-text" placeholder="Enter Text" id="from" value={fromText} onChange={(e) => setFromText(e.target.value)}></textarea>
+                <textarea name="from" className="from-text" placeholder="Enter Text....." id="from" value={fromText} onChange={(e) => setFromText(e.target.value)}></textarea>
                 <textarea name="to" className="to-text" id="to" value={toText} readonly></textarea>
             </div>
             <ul className="controls">
